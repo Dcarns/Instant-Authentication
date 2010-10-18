@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>QR Authentication</title>
+    <style>
+        #authSpan { font-size:60px; }
+    </style>
+        
+    <script src="/json.js"></script> <!-- for ie -->
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    
+    <script>
+      function message(obj){
+        
+	var welcomeDiv = document.getElementById("welcomeDiv");
+	var img = document.getElementById("QRimg");
+	var authSpan = document.getElementById("authSpan");
+	if(obj.qr) {
+		img.src = "http://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=" + obj.qr[0];
+		//var imgDebug = document.getElementById("debugQRimg");
+		imgDebug.innerHTML = obj.qr[0];
+	} else if (obj.auth) {
+		authSpan.innerHTML = obj.auth[0];
+		welcomeDiv.style.display = 'none';
+	}
+	
+      }
+                
+      var socket = new io.Socket(null, {port: 8080});
+      socket.connect();
+      socket.on('message', function(obj){
+        
+        message(obj);
+      });
+    </script>
+    
+    
+    <span id="authSpan"></span>
+    <div id="welcomeDiv">
+        <h1>Please Log-In With Your QR Code</h1>
+        <p>If you would like to log in, please scan the following QR code:</p>
+        <img id="QRimg">
+        <br>
+        <span id="debugQRimg"></span>
+	<p>This test page will work with most modern browsers.</p>
+        <p>Scan the QR code with a free QR application on an iPhone or Android phone.</p>
+    </div>
+  </body>
+</html>
