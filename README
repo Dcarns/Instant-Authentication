@@ -1,3 +1,8 @@
+Proof-of-concept code.  Use a QR code to authenticate a web user.
+
+Sorry if this is all over the place. This is my first git project and I am a novice programmer at best.  But still, the effect here is really cool.
+
+
 Requires:
 
 Socket.IO Server
