@@ -34,11 +34,17 @@
         	var authSpan = document.getElementById("authSpan");
         	if(obj.qr) {
         		img.src = "http://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=" + obj.qr[0];
-        		//var imgDebug = document.getElementById("debugQRimg");
+        		
+        		//The following is for debugging.  Remove after testing
+        		var imgDebug = document.getElementById("debugQRimg");
         		imgDebug.innerHTML = obj.qr[0];
         	} else if (obj.auth) {
         		authSpan.innerHTML = obj.auth[0];
         		welcomeDiv.style.display = 'none';
+                setInterval(function(){
+                    window.location = "http://www.google.com/";    
+                },2000);
+        		
         	}    	
           }
                     

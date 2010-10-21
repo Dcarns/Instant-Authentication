@@ -60,7 +60,7 @@ server.listen(8080);
 var io = io.listen(server),
 	buffer = [];
 
-var sockethostname = "172.25.181.138";
+var sockethostname = "localhost";
 
 io.on('connection', function(client){
 	client.send({ buffer: buffer });
