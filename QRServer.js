@@ -1,3 +1,12 @@
+/**
+ * QR Instant Authentication Server
+ * 
+ * @author David Carns <dcarns@gmail.com>
+ * @license The MIT license.
+ * @copyright Copyright (c) 2010 David Carns <dcarns@gmail.com>
+ */
+
+
 var http = require('http'), 
 		url = require('url'),
 		fs = require('fs'),
