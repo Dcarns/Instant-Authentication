@@ -27,23 +27,38 @@
   <body>
     
     <script>
+    
+        
+                  
+        function createCookie(name,value,days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+            else var expires = "";
+            document.cookie = name+"="+value+expires+"; path=/";
+        }
+    
         function message(obj){
         
         	var welcomeDiv = document.getElementById("welcomeDiv");
         	var img = document.getElementById("QRimg");
         	var authSpan = document.getElementById("authSpan");
         	if(obj.qr) {
-        		img.src = "http://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=" + obj.qr[0];
+        		img.src = "http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=" + obj.qr[0];
         		
         		//The following is for debugging.  Remove after testing
         		var imgDebug = document.getElementById("debugQRimg");
-        		imgDebug.innerHTML = obj.qr[0];
+        		imgDebug.innerHTML = "<a href="+obj.qr[0]+" target=_blank>"+obj.qr[0]+"</a>";
         	} else if (obj.auth) {
         		authSpan.innerHTML = obj.auth[0];
+        	
         		welcomeDiv.style.display = 'none';
+        		createCookie("SessionCookieFromQR",obj.cookie[0]);
                 setInterval(function(){
-                    window.location = "http://www.google.com/";    
-                },2000);
+                    window.location = "QRSecuredPage.html";    
+                },6000);
         		
         	}    	
           }
@@ -53,13 +68,17 @@
           socket.on('message', function(obj){            
             message(obj);
           });
+          
+ 
+
+
     </script>
     
     
     <span id="authSpan"></span>
     <div id="welcomeDiv">
-        <h1>Please Log-In With Your QR Code</h1>
-        <p>If you would like to log in, please scan the following QR code:</p>
+        <h1>If you would like to log in, <br>please scan the following QR code:</h1>
+        
         <img id="QRimg">
         <br>
         <span id="debugQRimg"></span>

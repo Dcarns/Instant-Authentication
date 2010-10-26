@@ -10,7 +10,7 @@
 var http = require('http'), 
 		url = require('url'),
 		fs = require('fs'),
-		io = require('../../'),
+		io = require('../../'), //Alter the require path to your socket.io location
 		sys = require('sys'),
 		
 server = http.createServer(function(req, res){
@@ -35,7 +35,7 @@ server = http.createServer(function(req, res){
 				res.end();
 			});
 			break;
-		case '/QRauth.html':
+		case '/QRAuth.html':
 			fs.readFile(__dirname + path, function(err, data){
 				if (err) return send404(res);
 				res.writeHead(200, {'Content-Type': path == 'json.js' ? 'text/javascript' : 'text/html'})
@@ -71,28 +71,29 @@ io.on('connection', function(client){
 	function drawQR()
 	{	    
     	
-		QRCode.qr[0] = "http://" + sockethostname + ":8080/QRauth.html?clientID=" + client.sessionId;
+		QRCode.qr[0] = "http://" + sockethostname + ":8080/QRAuth.html?clientID=" + client.sessionId;
 	
 		buffer.push(QRCode);
-		if (buffer.length > 15) buffer.shift();
+		if (buffer.length > 15) buffer.shift(); 
 	
 	   	client.send(QRCode);
 	    
 	}
 	drawQR();
 	
+	/*
 	setInterval(function(){
 	    
 		drawQR();
 
     	},30000);
+    */
 
 	client.on('message', function(message){
-		
-		authAnnounce = { auth: ["You Are Authenticated!"]};
-		console.log("Authenticated");
-		console.log(message);
-		io.clients[message].send(authAnnounce);
+			
+		authAnnounce = { auth: ["You Are Authenticated!<br><br>Check your broswer for the session cookie SessionCookieFromQR.<br><br>Passing you to the secured application...."], cookie: [message.cookie[0]] };
+		console.log("Authenticated: " + message.cookie[0] + ": " + message.client[0]);
+		io.clients[message.client[0]].send(authAnnounce);
 		
 	});
 
